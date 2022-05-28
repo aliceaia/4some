@@ -146,7 +146,7 @@ uninstall() {
 }
 
 reset_user() {
-    confirm "Bạn có chắc chắn muốn đặt lại tên người dùng và mật khẩu cho quản trị viên không" "n"
+    confirm "Bạn có chắc chắn muốn đặt lại tên người dùng và mật khẩu cho quản trị viên không?" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
@@ -465,16 +465,16 @@ ssl_cert_issue() {
             LOGE "证书安装失败,脚本退出"
             exit 1
         else
-            LOGI "证书安装成功,开启自动更新..."
+            LOGI "Chứng chỉ được cài đặt thành công, cho phép cập nhật tự động..."
         fi
         ~/.acme.sh/acme.sh --upgrade --auto-upgrade
         if [ $? -ne 0 ]; then
-            LOGE "自动更新设置失败,脚本退出"
+            LOGE "Cài đặt cập nhật tự động không thành công, tập lệnh đã thoát"
             ls -lah cert
             chmod 755 $certPath
             exit 1
         else
-            LOGI "证书已安装且已开启自动更新,具体信息如下"
+            LOGI "Chứng chỉ đã được cài đặt và cập nhật tự động đã được bật, thông tin chi tiết như sau"
             ls -lah cert
             chmod 755 $certPath
         fi
@@ -484,51 +484,51 @@ ssl_cert_issue() {
 }
 
 show_usage() {
-    echo "x-ui 管理脚本使用方法: "
+    echo "x-ui Cách sử dụng tập lệnh quản lý: "
     echo "------------------------------------------"
-    echo "x-ui              - 显示管理菜单 (功能更多)"
-    echo "x-ui start        - 启动 x-ui 面板"
-    echo "x-ui stop         - 停止 x-ui 面板"
-    echo "x-ui restart      - 重启 x-ui 面板"
-    echo "x-ui status       - 查看 x-ui 状态"
-    echo "x-ui enable       - 设置 x-ui 开机自启"
-    echo "x-ui disable      - 取消 x-ui 开机自启"
-    echo "x-ui log          - 查看 x-ui 日志"
-    echo "x-ui v2-ui        - 迁移本机器的 v2-ui 账号数据至 x-ui"
-    echo "x-ui update       - 更新 x-ui 面板"
-    echo "x-ui install      - 安装 x-ui 面板"
-    echo "x-ui uninstall    - 卸载 x-ui 面板"
+    echo "x-ui              - Mở menu admin (mở rộng)"
+    echo "x-ui start        - Chạy"
+    echo "x-ui stop         - Dừng"
+    echo "x-ui restart      - Khởi động lại"
+    echo "x-ui status       - Trạng thái"
+    echo "x-ui enable       - Khởi động cùng hệ thống"
+    echo "x-ui disable      - Tắt khởi động cùng hệ thống"
+    echo "x-ui log          - Lịch sử"
+    echo "x-ui v2-ui        - Di chuyển dữ liệu tài khoản v2-ui của máy này sang x-ui"
+    echo "x-ui update       - Update x-ui"
+    echo "x-ui install      - Cài đặt x-ui"
+    echo "x-ui uninstall    - Gỡ cài đặt x-ui"
     echo "------------------------------------------"
 }
 
 show_menu() {
     echo -e "
-  ${green}x-ui 面板管理脚本${plain}
-  ${green}0.${plain} 退出脚本
+  ${green}x-ui Quản lí${plain}
+  ${green}0.${plain} Thoát
 ————————————————
-  ${green}1.${plain} 安装 x-ui
-  ${green}2.${plain} 更新 x-ui
-  ${green}3.${plain} 卸载 x-ui
+  ${green}1.${plain} Cài đặt x-ui
+  ${green}2.${plain} Cập nhật x-ui
+  ${green}3.${plain} Gỡ cài đặt x-ui
 ————————————————
-  ${green}4.${plain} 重置用户名密码
-  ${green}5.${plain} 重置面板设置
-  ${green}6.${plain} 设置面板端口
-  ${green}7.${plain} 查看当前面板设置
+  ${green}4.${plain} Đặt lại user và pass
+  ${green}5.${plain} Đặt lại settings
+  ${green}6.${plain} Thiết lập port cho web
+  ${green}7.${plain} Xem cài đặt
 ————————————————
-  ${green}8.${plain} 启动 x-ui
-  ${green}9.${plain} 停止 x-ui
-  ${green}10.${plain} 重启 x-ui
-  ${green}11.${plain} 查看 x-ui 状态
-  ${green}12.${plain} 查看 x-ui 日志
+  ${green}8.${plain} Start x-ui
+  ${green}9.${plain} Stop x-ui
+  ${green}10.${plain} Restart x-ui
+  ${green}11.${plain} Trạng thái x-ui
+  ${green}12.${plain} Nhật kí
 ————————————————
-  ${green}13.${plain} 设置 x-ui 开机自启
-  ${green}14.${plain} 取消 x-ui 开机自启
+  ${green}13.${plain} Chạy khi khởi động
+  ${green}14.${plain} Không chạy khi khởi động
 ————————————————
-  ${green}15.${plain} 一键安装 bbr (最新内核)
-  ${green}16.${plain} 一键申请SSL证书(acme申请)
+  ${green}15.${plain} Cài đặt bbr (mới nhất)
+  ${green}16.${plain} Cài đặt SSL (acme)
  "
     show_status
-    echo && read -p "请输入选择 [0-16]: " num
+    echo && read -p "Vui lòng nhập một lựa chọn [0-16]: " num
 
     case "${num}" in
     0)
@@ -583,7 +583,7 @@ show_menu() {
         ssl_cert_issue
         ;;
     *)
-        LOGE "请输入正确的数字 [0-16]"
+        LOGE "Vui lòng nhập số chính xác [0-16]"
         ;;
     esac
 }
